@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Create Story | InkFlow</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+    <header class="navbar">
+
+        <a href="index.html" class="brand">
+
+            <span class="brand-mark">
+                I
+            </span>
+
+            InkFlow
+
+        </a>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="dashboard.html"
+                class="login-link">
+
+                Dashboard
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="editor-page">
+
+        <section class="editor-header">
+
+            <p class="section-label">
+                CREATE
+            </p>
+
+            <h1>
+                Write something
+                <span>worth reading.</span>
+            </h1>
+
+            <p>
+                Share an idea, experience or perspective
+                with the InkFlow community.
+            </p>
+
+        </section>
+
+
+        <form
+            id="createBlogForm"
+            class="blog-form">
+
+
+            <div class="form-group">
+
+                <label for="blogTitle">
+                    Story title
+                </label>
+
+                <input
+                    type="text"
+                    id="blogTitle"
+                    name="title"
+                    placeholder="Give your story a strong title"
+                    required>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="blogCategory">
+                        Category
+                    </label>
+
+                    <select
+                        id="blogCategory"
+                        name="category"
+                        required>
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="development">
+                            Web Development
+                        </option>
+
+                        <option value="ai">
+                            Artificial Intelligence
+                        </option>
+
+                        <option value="career">
+                            Career
+                        </option>
+
+                        <option value="design">
+                            Design
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="readTime">
+                        Reading time
+                    </label>
+
+                    <input
+                        type="number"
+                        id="readTime"
+                        name="readTime"
+                        min="1"
+                        max="60"
+                        placeholder="Minutes"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="blogExcerpt">
+                    Short description
+                </label>
+
+                <textarea
+                    id="blogExcerpt"
+                    name="excerpt"
+                    rows="3"
+                    placeholder="Give readers a reason to continue reading..."
+                    required></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="blogContent">
+                    Your story
+                </label>
+
+                <textarea
+                    id="blogContent"
+                    name="content"
+                    rows="14"
+                    placeholder="Start writing your story..."
+                    required></textarea>
+
+            </div>
+
+
+            <div class="editor-actions">
+
+                <a
+                    href="dashboard.html"
+                    class="secondary-button">
+
+                    Cancel
+
+                </a>
+
+                <button
+                    type="submit"
+                    class="form-button">
+
+                    Publish Story →
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

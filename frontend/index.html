@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="InkFlow - A space for curious minds to read, write and share ideas.">
+
+    <title>InkFlow | Ideas Worth Reading</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         Navigation
+    ========================== -->
+
+    <header class="navbar">
+
+        <a href="index.html" class="brand">
+            <span class="brand-mark">I</span>
+            InkFlow
+        </a>
+
+        <nav>
+            <a href="index.html" class="active">Explore</a>
+            <a href="#trending">Topics</a>
+            <a href="#latest">Writers</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="login.html" class="login-link">Log in</a>
+
+            <a href="register.html" class="write-button">
+                Start Writing
+            </a>
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- =========================
+             Hero Section
+        ========================== -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">
+                    A SPACE FOR CURIOUS MINDS
+                </p>
+
+                <h1>
+                    Ideas worth
+                    <span>reading.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Discover thoughtful stories, practical ideas,
+                    and perspectives from people building the future.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a href="register.html" class="primary-button">
+                        Start exploring
+                        <span>↗</span>
+                    </a>
+
+                    <a href="#latest"
+                       class="secondary-button"
+                       id="browseStories">
+                        Browse stories
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-orbit">
+
+                <div class="orbit-card card-one">
+                    <span>AI</span>
+                    Artificial Intelligence
+                </div>
+
+                <div class="orbit-card card-two">
+                    <span>DEV</span>
+                    Web Development
+                </div>
+
+                <div class="orbit-card card-three">
+                    <span>LIFE</span>
+                    Personal Growth
+                </div>
+
+                <div class="orbit-center">
+                    <span>✦</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             Featured Story
+        ========================== -->
+
+        <section class="featured">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        01 / FEATURED
+                    </p>
+
+                    <h2>
+                        One story.
+                        <span>Worth your time.</span>
+                    </h2>
+
+                </div>
+
+                <a href="#latest" class="view-link">
+                    View all stories →
+                </a>
+
+            </div>
+
+
+            <article class="featured-story">
+
+                <div class="featured-visual">
+
+                    <div class="visual-grid"></div>
+
+                    <div class="visual-text">
+                        INK<br>
+                        FLOW
+                    </div>
+
+                    <div class="visual-number">
+                        01
+                    </div>
+
+                </div>
+
+
+                <div class="featured-content">
+
+                    <div class="story-meta">
+
+                        <span class="category">
+                            TECHNOLOGY
+                        </span>
+
+                        <span>
+                            7 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        The new generation of developers
+                        isn't just writing code.
+                    </h3>
+
+                    <p>
+                        Technology is changing quickly.
+                        Here's why the most valuable developers
+                        are learning to think beyond the code
+                        they write.
+                    </p>
+
+
+                    <div class="author">
+
+                        <div class="author-avatar">
+                            AR
+                        </div>
+
+                        <div>
+                            <strong>Arav Raj</strong>
+                            <small>Software & Technology</small>
+                        </div>
+
+                    </div>
+
+
+                    <a href="#" class="read-button">
+                        Read article
+                        <span>↗</span>
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- =========================
+             Trending Topics
+        ========================== -->
+
+        <section class="trending" id="trending">
+
+            <div class="section-label">
+                02 / TRENDING
+            </div>
+
+
+            <div class="topic-list">
+
+                <button
+                    type="button"
+                    class="topic active"
+                    data-topic="all">
+                    All
+                </button>
+
+                <button
+                    type="button"
+                    class="topic"
+                    data-topic="development">
+                    #WebDevelopment
+                </button>
+
+                <button
+                    type="button"
+                    class="topic"
+                    data-topic="ai">
+                    #ArtificialIntelligence
+                </button>
+
+                <button
+                    type="button"
+                    class="topic"
+                    data-topic="career">
+                    #Career
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             Latest Stories
+        ========================== -->
+
+        <section class="latest" id="latest">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        03 / LATEST
+                    </p>
+
+                    <h2>
+                        Fresh from
+                        <span>the community.</span>
+                    </h2>
+
+                    <p class="results-count" id="resultsCount">
+                        Showing 3 stories
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="story-list">
+
+
+                <!-- Story 1 -->
+
+                <article
+                    class="story-row"
+                    data-category="development">
+
+                    <div class="story-number">
+                        01
+                    </div>
+
+                    <div class="story-info">
+
+                        <span class="category">
+                            DEVELOPMENT
+                        </span>
+
+                        <h3>
+                            Why every developer should
+                            understand how the web works
+                        </h3>
+
+                        <p>
+                            A practical look at the technologies
+                            powering the modern internet.
+                        </p>
+
+                    </div>
+
+                    <div class="story-details">
+
+                        <span>6 min</span>
+                        <span>Aug 14</span>
+
+                    </div>
+
+                    <a href="#" class="arrow">
+                        ↗
+                    </a>
+
+                </article>
+
+
+                <!-- Story 2 -->
+
+                <article
+                    class="story-row"
+                    data-category="ai">
+
+                    <div class="story-number">
+                        02
+                    </div>
+
+                    <div class="story-info">
+
+                        <span class="category">
+                            AI
+                        </span>
+
+                        <h3>
+                            Building useful AI instead
+                            of just impressive AI
+                        </h3>
+
+                        <p>
+                            What happens when we focus on solving
+                            real problems instead of chasing trends?
+                        </p>
+
+                    </div>
+
+                    <div class="story-details">
+
+                        <span>5 min</span>
+                        <span>Aug 13</span>
+
+                    </div>
+
+                    <a href="#" class="arrow">
+                        ↗
+                    </a>
+
+                </article>
+
+
+                <!-- Story 3 -->
+
+                <article
+                    class="story-row"
+                    data-category="career">
+
+                    <div class="story-number">
+                        03
+                    </div>
+
+                    <div class="story-info">
+
+                        <span class="category">
+                            CAREER
+                        </span>
+
+                        <h3>
+                            Learning to build in public
+                        </h3>
+
+                        <p>
+                            Why documenting your learning journey
+                            can become one of your strongest assets.
+                        </p>
+
+                    </div>
+
+                    <div class="story-details">
+
+                        <span>4 min</span>
+                        <span>Aug 12</span>
+
+                    </div>
+
+                    <a href="#" class="arrow">
+                        ↗
+                    </a>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         Footer
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-brand">
+
+            <a href="index.html" class="brand">
+                <span class="brand-mark">I</span>
+                InkFlow
+            </a>
+
+            <p>
+                Ideas worth reading.
+            </p>
+
+        </div>
+
+        <p class="copyright">
+            © 2026 InkFlow. Built as a Full Stack Development Internship Project.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

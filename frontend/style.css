@@ -1383,3 +1383,18 @@ footer {
     }
 
 }
+/* =========================================
+   Form Messages
+========================================= */
+
+.form-message {
+    min-height: 20px;
+
+    margin-top: 18px;
+
+    text-align: center;
+
+    color: var(--accent);
+
+    font-size: 13px;
+}

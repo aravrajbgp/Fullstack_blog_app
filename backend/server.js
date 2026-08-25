@@ -37,6 +37,7 @@ app.get("/", (req, res) => {
     });
 });
 
+
 app.get("/api/health", (req, res) => {
     res.json({
         success: true,
@@ -56,51 +57,71 @@ app.post("/api/auth/register", async (req, res) => {
         const { name, email, password } = req.body;
 
         if (!name || !email || !password) {
+
             return res.status(400).json({
                 success: false,
                 message: "Name, email and password are required."
             });
+
         }
 
         if (password.length < 6) {
+
             return res.status(400).json({
                 success: false,
                 message: "Password must be at least 6 characters long."
             });
+
         }
 
-        const existingUser = await usersCollection.findOne({
-            email: email.toLowerCase()
-        });
+        const existingUser =
+            await usersCollection.findOne({
+                email: email.toLowerCase()
+            });
 
         if (existingUser) {
+
             return res.status(409).json({
                 success: false,
                 message: "An account with this email already exists."
             });
+
         }
 
         const hashedPassword =
             await bcrypt.hash(password, 10);
 
         const newUser = {
+
             name: name,
+
             email: email.toLowerCase(),
+
             password: hashedPassword,
+
             createdAt: new Date()
+
         };
 
         const result =
             await usersCollection.insertOne(newUser);
 
         res.status(201).json({
+
             success: true,
+
             message: "User registered successfully.",
+
             user: {
+
                 id: result.insertedId,
+
                 name: newUser.name,
+
                 email: newUser.email
+
             }
+
         });
 
     } catch (error) {
@@ -108,8 +129,11 @@ app.post("/api/auth/register", async (req, res) => {
         console.error("Register error:", error);
 
         res.status(500).json({
+
             success: false,
+
             message: "Server error during registration."
+
         });
 
     }
@@ -128,10 +152,15 @@ app.post("/api/auth/login", async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
+
             return res.status(400).json({
+
                 success: false,
+
                 message: "Email and password are required."
+
             });
+
         }
 
         const user =
@@ -140,10 +169,15 @@ app.post("/api/auth/login", async (req, res) => {
             });
 
         if (!user) {
+
             return res.status(401).json({
+
                 success: false,
+
                 message: "Invalid email or password."
+
             });
+
         }
 
         const passwordMatch =
@@ -153,20 +187,33 @@ app.post("/api/auth/login", async (req, res) => {
             );
 
         if (!passwordMatch) {
+
             return res.status(401).json({
+
                 success: false,
+
                 message: "Invalid email or password."
+
             });
+
         }
 
         res.json({
+
             success: true,
+
             message: "Login successful.",
+
             user: {
+
                 id: user._id,
+
                 name: user.name,
+
                 email: user.email
+
             }
+
         });
 
     } catch (error) {
@@ -174,8 +221,11 @@ app.post("/api/auth/login", async (req, res) => {
         console.error("Login error:", error);
 
         res.status(500).json({
+
             success: false,
+
             message: "Server error during login."
+
         });
 
     }
@@ -184,7 +234,7 @@ app.post("/api/auth/login", async (req, res) => {
 
 
 // ================================
-// Create Blog
+// CREATE BLOG
 // ================================
 
 app.post("/api/blogs", async (req, res) => {
@@ -208,40 +258,65 @@ app.post("/api/blogs", async (req, res) => {
         ) {
 
             return res.status(400).json({
+
                 success: false,
+
                 message: "All blog fields are required."
+
             });
 
         }
 
         const newBlog = {
+
             title: title,
+
             category: category,
+
             readTime: Number(readTime),
+
             excerpt: excerpt,
+
             content: content,
-            createdAt: new Date()
+
+            createdAt: new Date(),
+
+            updatedAt: new Date()
+
         };
 
         const result =
             await blogsCollection.insertOne(newBlog);
 
         res.status(201).json({
+
             success: true,
+
             message: "Blog created successfully.",
+
             blog: {
+
                 id: result.insertedId,
+
                 ...newBlog
+
             }
+
         });
 
     } catch (error) {
 
-        console.error("Create blog error:", error);
+        console.error(
+            "Create blog error:",
+            error
+        );
 
         res.status(500).json({
+
             success: false,
+
             message: "Server error while creating blog."
+
         });
 
     }
@@ -250,7 +325,7 @@ app.post("/api/blogs", async (req, res) => {
 
 
 // ================================
-// Get All Blogs
+// READ ALL BLOGS
 // ================================
 
 app.get("/api/blogs", async (req, res) => {
@@ -260,22 +335,35 @@ app.get("/api/blogs", async (req, res) => {
         const blogs =
             await blogsCollection
                 .find({})
-                .sort({ createdAt: -1 })
+                .sort({
+                    createdAt: -1
+                })
                 .toArray();
 
         res.json({
+
             success: true,
+
             count: blogs.length,
+
             blogs: blogs
+
         });
 
     } catch (error) {
 
-        console.error("Get blogs error:", error);
+        console.error(
+            "Get blogs error:",
+            error
+        );
 
         res.status(500).json({
+
             success: false,
-            message: "Server error while retrieving blogs."
+
+            message:
+                "Server error while retrieving blogs."
+
         });
 
     }
@@ -284,37 +372,258 @@ app.get("/api/blogs", async (req, res) => {
 
 
 // ================================
-// Get Single Blog
+// READ SINGLE BLOG
 // ================================
 
 app.get("/api/blogs/:id", async (req, res) => {
 
     try {
 
+        if (!ObjectId.isValid(req.params.id)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Invalid blog ID."
+
+            });
+
+        }
+
         const blog =
             await blogsCollection.findOne({
-                _id: new ObjectId(req.params.id)
+
+                _id:
+                    new ObjectId(req.params.id)
+
             });
 
         if (!blog) {
 
             return res.status(404).json({
+
                 success: false,
+
                 message: "Blog not found."
+
             });
 
         }
 
         res.json({
+
             success: true,
+
             blog: blog
+
         });
 
     } catch (error) {
 
-        res.status(400).json({
+        console.error(
+            "Get single blog error:",
+            error
+        );
+
+        res.status(500).json({
+
             success: false,
-            message: "Invalid blog ID."
+
+            message:
+                "Server error while retrieving blog."
+
+        });
+
+    }
+
+});
+
+
+// ================================
+// UPDATE BLOG
+// ================================
+
+app.put("/api/blogs/:id", async (req, res) => {
+
+    try {
+
+        const { title, category, readTime, excerpt, content } =
+            req.body;
+
+        if (!ObjectId.isValid(req.params.id)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Invalid blog ID."
+
+            });
+
+        }
+
+        if (
+            !title ||
+            !category ||
+            !readTime ||
+            !excerpt ||
+            !content
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "All blog fields are required."
+
+            });
+
+        }
+
+        const updatedBlog = {
+
+            title: title,
+
+            category: category,
+
+            readTime: Number(readTime),
+
+            excerpt: excerpt,
+
+            content: content,
+
+            updatedAt: new Date()
+
+        };
+
+        const result =
+            await blogsCollection.updateOne(
+
+                {
+                    _id:
+                        new ObjectId(req.params.id)
+                },
+
+                {
+                    $set: updatedBlog
+                }
+
+            );
+
+        if (result.matchedCount === 0) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "Blog not found."
+
+            });
+
+        }
+
+        const blog =
+            await blogsCollection.findOne({
+
+                _id:
+                    new ObjectId(req.params.id)
+
+            });
+
+        res.json({
+
+            success: true,
+
+            message: "Blog updated successfully.",
+
+            blog: blog
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Update blog error:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Server error while updating blog."
+
+        });
+
+    }
+
+});
+
+
+// ================================
+// DELETE BLOG
+// ================================
+
+app.delete("/api/blogs/:id", async (req, res) => {
+
+    try {
+
+        if (!ObjectId.isValid(req.params.id)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Invalid blog ID."
+
+            });
+
+        }
+
+        const result =
+            await blogsCollection.deleteOne({
+
+                _id:
+                    new ObjectId(req.params.id)
+
+            });
+
+        if (result.deletedCount === 0) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "Blog not found."
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            message: "Blog deleted successfully."
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Delete blog error:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Server error while deleting blog."
+
         });
 
     }
@@ -341,7 +650,9 @@ async function startServer() {
         blogsCollection =
             database.collection("blogs");
 
-        console.log("MongoDB connected successfully.");
+        console.log(
+            "MongoDB connected successfully."
+        );
 
         app.listen(PORT, () => {
 

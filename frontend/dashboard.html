@@ -17,7 +17,6 @@
 
 <body>
 
-
     <header class="navbar">
 
         <a href="index.html" class="brand">
@@ -29,7 +28,6 @@
             InkFlow
 
         </a>
-
 
         <div class="nav-actions">
 
@@ -100,8 +98,8 @@
                     STORIES
                 </span>
 
-                <strong>
-                    03
+                <strong id="storyCount">
+                    00
                 </strong>
 
             </div>
@@ -155,60 +153,15 @@
             </div>
 
 
-            <div class="story-list">
+            <div
+                class="story-list"
+                id="publishedStories">
 
-
-                <article class="dashboard-story">
-
-                    <div>
-
-                        <span class="category">
-                            DEVELOPMENT
-                        </span>
-
-                        <h3>
-                            Why every developer should
-                            understand how the web works
-                        </h3>
-
-                        <p>
-                            Published Aug 14, 2026
-                        </p>
-
-                    </div>
-
-                    <button>
-                        Edit
-                    </button>
-
-                </article>
-
-
-                <article class="dashboard-story">
-
-                    <div>
-
-                        <span class="category">
-                            AI
-                        </span>
-
-                        <h3>
-                            Building useful AI instead
-                            of just impressive AI
-                        </h3>
-
-                        <p>
-                            Published Aug 13, 2026
-                        </p>
-
-                    </div>
-
-                    <button>
-                        Edit
-                    </button>
-
-                </article>
-
+                <div class="empty-state">
+                    <p>
+                        Loading your stories...
+                    </p>
+                </div>
 
             </div>
 

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Blog | InkFlow</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <a href="index.html" class="brand">
+
+            <span class="brand-mark">
+                I
+            </span>
+
+            InkFlow
+
+        </a>
+
+        <div class="nav-actions">
+
+            <a
+                href="dashboard.html"
+                class="login-link">
+
+                ← Dashboard
+
+            </a>
+
+            <a
+                href="create-blog.html"
+                class="write-button">
+
+                + Write
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="blog-page">
+
+        <article class="single-blog">
+
+            <p
+                id="blogCategory"
+                class="section-label">
+                LOADING...
+            </p>
+
+            <h1 id="blogTitle">
+                Loading story...
+            </h1>
+
+            <p
+                id="blogDate"
+                class="blog-date">
+            </p>
+
+            <p
+                id="blogExcerpt"
+                class="blog-excerpt">
+            </p>
+
+            <div
+                id="blogContent"
+                class="blog-content">
+            </div>
+
+        </article>
+
+    </main>
+
+
+    <script>
+
+        const API_URL =
+            "http://localhost:5001";
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const blogId =
+            params.get("id");
+
+
+        async function loadBlog() {
+
+            if (!blogId) {
+
+                document.querySelector("#blogTitle")
+                    .textContent =
+                    "Blog not found.";
+
+                return;
+
+            }
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/api/blogs/${blogId}`
+                    );
+
+                const data =
+                    await response.json();
+
+                if (!data.success) {
+
+                    document.querySelector("#blogTitle")
+                        .textContent =
+                        "Blog not found.";
+
+                    return;
+
+                }
+
+                const blog =
+                    data.blog;
+
+
+                document.querySelector("#blogCategory")
+                    .textContent =
+                    blog.category || "STORY";
+
+
+                document.querySelector("#blogTitle")
+                    .textContent =
+                    blog.title;
+
+
+                document.querySelector("#blogDate")
+                    .textContent =
+                    `Published ${new Date(
+                        blog.createdAt
+                    ).toLocaleDateString(
+                        "en-US",
+                        {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric"
+                        }
+                    )}`;
+
+
+                document.querySelector("#blogExcerpt")
+                    .textContent =
+                    blog.excerpt || "";
+
+
+                document.querySelector("#blogContent")
+                    .textContent =
+                    blog.content || "";
+
+            } catch (error) {
+
+                console.error(
+                    "Error loading blog:",
+                    error
+                );
+
+                document.querySelector("#blogTitle")
+                    .textContent =
+                    "Unable to load this story.";
+
+            }
+
+        }
+
+
+        loadBlog();
+
+    </script>
+
+</body>
+
+</html>

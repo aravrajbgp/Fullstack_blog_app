@@ -91,6 +91,11 @@
         const API_URL =
             "http://localhost:5001";
 
+
+        /* ========================================
+           Get Blog ID
+        ======================================== */
+
         const params =
             new URLSearchParams(
                 window.location.search
@@ -100,54 +105,133 @@
             params.get("id");
 
 
+        /* ========================================
+           Get JWT Token
+        ======================================== */
+
+        const token =
+            localStorage.getItem(
+                "inkflowToken"
+            );
+
+
+        /* ========================================
+           Authentication Check
+        ======================================== */
+
+        if (!token) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+        /* ========================================
+           Load Blog
+        ======================================== */
+
         async function loadBlog() {
 
             if (!blogId) {
 
-                document.querySelector("#blogTitle")
-                    .textContent =
+                document.querySelector(
+                    "#blogTitle"
+                ).textContent =
                     "Blog not found.";
 
                 return;
 
             }
 
+
             try {
 
                 const response =
                     await fetch(
-                        `${API_URL}/api/blogs/${blogId}`
+                        `${API_URL}/api/blogs/${blogId}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+
+                                "Authorization":
+                                    `Bearer ${token}`
+
+                            }
+
+                        }
                     );
+
 
                 const data =
                     await response.json();
 
+
+                /* ========================================
+                   Invalid / Expired Token
+                ======================================== */
+
+                if (
+                    response.status === 401 ||
+                    response.status === 403
+                ) {
+
+                    localStorage.removeItem(
+                        "inkflowToken"
+                    );
+
+                    localStorage.removeItem(
+                        "inkflowUser"
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                /* ========================================
+                   Blog Not Found
+                ======================================== */
+
                 if (!data.success) {
 
-                    document.querySelector("#blogTitle")
-                        .textContent =
+                    document.querySelector(
+                        "#blogTitle"
+                    ).textContent =
                         "Blog not found.";
 
                     return;
 
                 }
 
+
                 const blog =
                     data.blog;
 
 
-                document.querySelector("#blogCategory")
-                    .textContent =
+                /* ========================================
+                   Display Blog
+                ======================================== */
+
+                document.querySelector(
+                    "#blogCategory"
+                ).textContent =
                     blog.category || "STORY";
 
 
-                document.querySelector("#blogTitle")
-                    .textContent =
+                document.querySelector(
+                    "#blogTitle"
+                ).textContent =
                     blog.title;
 
 
-                document.querySelector("#blogDate")
-                    .textContent =
+                document.querySelector(
+                    "#blogDate"
+                ).textContent =
                     `Published ${new Date(
                         blog.createdAt
                     ).toLocaleDateString(
@@ -160,14 +244,17 @@
                     )}`;
 
 
-                document.querySelector("#blogExcerpt")
-                    .textContent =
+                document.querySelector(
+                    "#blogExcerpt"
+                ).textContent =
                     blog.excerpt || "";
 
 
-                document.querySelector("#blogContent")
-                    .textContent =
+                document.querySelector(
+                    "#blogContent"
+                ).textContent =
                     blog.content || "";
+
 
             } catch (error) {
 
@@ -176,8 +263,10 @@
                     error
                 );
 
-                document.querySelector("#blogTitle")
-                    .textContent =
+
+                document.querySelector(
+                    "#blogTitle"
+                ).textContent =
                     "Unable to load this story.";
 
             }
@@ -185,7 +274,15 @@
         }
 
 
-        loadBlog();
+        /* ========================================
+           Start
+        ======================================== */
+
+        if (token) {
+
+            loadBlog();
+
+        }
 
     </script>
 

@@ -4,6 +4,7 @@
 
 const API_URL = "http://localhost:5001";
 
+
 /* =========================================
    Homepage Topic Filtering
 ========================================= */
@@ -41,10 +42,14 @@ if (topicButtons.length > 0) {
                     selectedTopic === "all" ||
                     storyCategory === selectedTopic
                 ) {
+
                     story.style.display = "grid";
                     visibleStories++;
+
                 } else {
+
                     story.style.display = "none";
+
                 }
 
             });
@@ -52,11 +57,15 @@ if (topicButtons.length > 0) {
             if (resultsCount) {
 
                 if (visibleStories === 1) {
+
                     resultsCount.textContent =
                         "Showing 1 story";
+
                 } else {
+
                     resultsCount.textContent =
                         `Showing ${visibleStories} stories`;
+
                 }
 
             }
@@ -105,6 +114,66 @@ if (browseButton) {
 
 
 /* =========================================
+   Authentication Helpers
+========================================= */
+
+function getToken() {
+
+    return localStorage.getItem("inkflowToken");
+
+}
+
+
+function getStoredUser() {
+
+    const storedUser =
+        localStorage.getItem("inkflowUser");
+
+    if (!storedUser) {
+        return null;
+    }
+
+    try {
+
+        return JSON.parse(storedUser);
+
+    } catch (error) {
+
+        console.error(
+            "Invalid stored user:",
+            error
+        );
+
+        localStorage.removeItem("inkflowUser");
+
+        return null;
+
+    }
+
+}
+
+
+function getAuthHeaders() {
+
+    const token = getToken();
+
+    if (!token) {
+
+        return {
+            "Content-Type": "application/json"
+        };
+
+    }
+
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+
+}
+
+
+/* =========================================
    Register Form
 ========================================= */
 
@@ -132,8 +201,10 @@ if (registerForm) {
                 document.querySelector("#registerPassword").value;
 
             if (registerMessage) {
+
                 registerMessage.textContent =
                     "Creating your account...";
+
             }
 
             try {
@@ -145,7 +216,8 @@ if (registerForm) {
                             method: "POST",
 
                             headers: {
-                                "Content-Type": "application/json"
+                                "Content-Type":
+                                    "application/json"
                             },
 
                             body: JSON.stringify({
@@ -160,8 +232,10 @@ if (registerForm) {
                     await response.json();
 
                 if (registerMessage) {
+
                     registerMessage.textContent =
                         data.message;
+
                 }
 
                 if (data.success) {
@@ -185,8 +259,10 @@ if (registerForm) {
                 );
 
                 if (registerMessage) {
+
                     registerMessage.textContent =
                         "Unable to connect to the server.";
+
                 }
 
             }
@@ -222,8 +298,10 @@ if (loginForm) {
                 document.querySelector("#loginPassword").value;
 
             if (loginMessage) {
+
                 loginMessage.textContent =
                     "Signing you in...";
+
             }
 
             try {
@@ -235,7 +313,8 @@ if (loginForm) {
                             method: "POST",
 
                             headers: {
-                                "Content-Type": "application/json"
+                                "Content-Type":
+                                    "application/json"
                             },
 
                             body: JSON.stringify({
@@ -249,11 +328,30 @@ if (loginForm) {
                     await response.json();
 
                 if (loginMessage) {
+
                     loginMessage.textContent =
                         data.message;
+
                 }
 
                 if (data.success) {
+
+                    /*
+                       Store JWT token
+                    */
+
+                    if (data.token) {
+
+                        localStorage.setItem(
+                            "inkflowToken",
+                            data.token
+                        );
+
+                    }
+
+                    /*
+                       Store logged-in user
+                    */
 
                     localStorage.setItem(
                         "inkflowUser",
@@ -277,8 +375,10 @@ if (loginForm) {
                 );
 
                 if (loginMessage) {
+
                     loginMessage.textContent =
                         "Unable to connect to the server.";
+
                 }
 
             }
@@ -298,18 +398,18 @@ const dashboardUserName =
 
 if (dashboardUserName) {
 
-    const storedUser =
-        localStorage.getItem("inkflowUser");
+    const user =
+        getStoredUser();
 
-    if (!storedUser) {
+    const token =
+        getToken();
+
+    if (!user || !token) {
 
         window.location.href =
             "login.html";
 
     } else {
-
-        const user =
-            JSON.parse(storedUser);
 
         dashboardUserName.textContent =
             user.name;
@@ -328,7 +428,13 @@ async function loadBlogs() {
     try {
 
         const response =
-            await fetch(`${API_URL}/api/blogs`);
+    await fetch(
+        `${API_URL}/api/blogs`,
+        {
+            method: "GET",
+            headers: getAuthHeaders()
+        }
+    );
 
         const data =
             await response.json();
@@ -337,7 +443,8 @@ async function loadBlogs() {
             return;
         }
 
-        const blogs = data.blogs;
+        const blogs =
+            data.blogs;
 
         /* Update story count */
 
@@ -345,8 +452,10 @@ async function loadBlogs() {
             document.querySelector("#storyCount");
 
         if (storyCount) {
+
             storyCount.textContent =
                 String(blogs.length).padStart(2, "0");
+
         }
 
         /* Find dashboard story container */
@@ -371,13 +480,16 @@ async function loadBlogs() {
             `;
 
             return;
+
         }
 
         blogs.forEach(function (blog) {
 
-            const story = document.createElement("div");
+            const story =
+                document.createElement("div");
 
-            story.className = "story-row";
+            story.className =
+                "story-row";
 
             story.innerHTML = `
                 <div class="story-info">
@@ -482,7 +594,9 @@ function formatDate(date) {
 ========================================= */
 
 if (dashboardUserName) {
+
     loadBlogs();
+
 }
 
 
@@ -499,9 +613,12 @@ const blogMessage =
 if (createBlogForm) {
 
     const storedUser =
-        localStorage.getItem("inkflowUser");
+        getStoredUser();
 
-    if (!storedUser) {
+    const token =
+        getToken();
+
+    if (!storedUser || !token) {
 
         window.location.href =
             "login.html";
@@ -530,8 +647,10 @@ if (createBlogForm) {
                 document.querySelector("#blogContent").value.trim();
 
             if (blogMessage) {
+
                 blogMessage.textContent =
                     "Publishing your story...";
+
             }
 
             try {
@@ -542,9 +661,13 @@ if (createBlogForm) {
                         {
                             method: "POST",
 
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
+                            /*
+                               Send JWT token
+                               with the request
+                            */
+
+                            headers:
+                                getAuthHeaders(),
 
                             body: JSON.stringify({
                                 title: title,
@@ -560,8 +683,10 @@ if (createBlogForm) {
                     await response.json();
 
                 if (blogMessage) {
+
                     blogMessage.textContent =
                         data.message;
+
                 }
 
                 if (data.success) {
@@ -577,6 +702,25 @@ if (createBlogForm) {
 
                 }
 
+                /*
+                   If token is invalid/expired
+                */
+
+                if (response.status === 401) {
+
+                    localStorage.removeItem(
+                        "inkflowToken"
+                    );
+
+                    localStorage.removeItem(
+                        "inkflowUser"
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                }
+
             } catch (error) {
 
                 console.error(
@@ -585,8 +729,10 @@ if (createBlogForm) {
                 );
 
                 if (blogMessage) {
+
                     blogMessage.textContent =
                         "Unable to connect to the server.";
+
                 }
 
             }
@@ -614,6 +760,14 @@ if (logoutButton) {
 
             localStorage.removeItem(
                 "inkflowUser"
+            );
+
+            localStorage.removeItem(
+                "inkflowToken"
+            );
+
+            localStorage.removeItem(
+                "inkflowSelectedBlog"
             );
 
             window.location.href =
